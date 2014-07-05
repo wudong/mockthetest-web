@@ -1,0 +1,71 @@
+<div>
+    <div class="question-text well">
+        <blockquote>
+            <div ng-if="question.question.type==='yes_or_no'">
+                <p>
+                    Is the following statement <span class="text-warning">TRUE</span> or <span
+                        class="text-warning">FALSE</span>?
+
+                <p class="text-info" ng-bind="question.question.question">
+                </p>
+                </p>
+            </div>
+            <div ng-if="question.question.type ==='right_or_wrong'">
+                <p>
+                    Which of the following statement is <span class="text-warning">TRUE </span>?
+                </p>
+            </div>
+            <div ng-if="question.question.type==='single'" class="text-info">
+                <p ng-bind="question.question.question">
+                </p>
+            </div>
+            <div ng-if="question.question.type==='multi'" class="text-info">
+                <p ng-bind-html="question.question.question|emphasis_two">
+                    <!--<p ng-bind-html="'<a>what is wrong here</a>'">-->
+                </p>
+            </div>
+
+        </blockquote>
+    </div>
+
+    <div class="answer list-group">
+        <a href='' ng-repeat="answer in question.answers"
+           ng-class="{'active': answer.selected, 'list-group-item': true}"
+           ng-click="answerClicked(answer, question)">
+            <i ng-class="{'fa': true, 'fa-fw': true,
+                                       'fa-circle-o': (!answer.selected) && (question.question.type !=='multi'),
+                                       'fa-square-o': (!answer.selected) && (question.question.type ==='multi'),
+                                       'fa-check': !(mode==='test') && answer.selected && answer.answer.right,
+                                       'fa-times': !(mode==='test') && answer.selected && !answer.answer.right,
+                                       'fa-check-square-o': (mode==='test' && answer.selected) && (question.question.type ==='multi'),
+                                       'fa-dot-circle-o': (mode==='test' && answer.selected) && (question.question.type !=='multi')
+                                       }"></i>
+                                    <span>
+                                        <!--<span style="margin-left: 3px; margin-right: 3px">{{vm.indexLabelMap[$index]}}:</span>-->
+                                        {{answer.answer.text}}</span>
+        </a>
+    </div>
+
+    <div class="question-tags row" >
+        <div class="hidden-sm hidden-xs col-md-1" ng-repeat="tag in question.tags">
+            <span class="label"
+                  ng-class="{'label-info' : tag.selected, 'label-default' : !tag.selected}">
+                <a ng-dblclick="tagQuestion(tag.tag, question)">
+                    <i class="fa fa-tag"></i>
+                    {{tag.tag}}</a></span>
+        </div>
+    </div>
+
+    <!-- A collapsable panel to show the explanation of the question.-->
+    <div class="panel" ng-if="!(mode==='test') && question.question.explanation">
+        <div class="panel-heading">
+            <a href='' ng-click="toggle_explain()"
+               tooltip="show the explanation of the question"> <i
+                    class="fa fa-angle-double-down"></i> explain</a>
+        </div>
+        <div id="explain-text" collapse="explain_collapse">
+            <div class="panel-body">{{question.question.explanation}}</div>
+        </div>
+    </div>
+
+</div>

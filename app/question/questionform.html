@@ -1,0 +1,120 @@
+<div class="modal-content">
+
+    <div class="modal-header">
+        <div class="modal-title">
+            <div class="container">
+                Question ID: <strong>{{question._id}}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <form role="form" class="form-horizontal">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="q">Type: </label>
+
+                <div class="col-sm-10">
+                    <select class="form-control" ng-model="question.type">
+                        <option>yes_or_no</option>
+                        <option>right_or_wrong</option>
+                        <option>single</option>
+                        <option>multi</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-if="question.type!=='right_or_wrong'">
+                <label class="col-sm-2 control-label" for="q">Question: </label>
+
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="3" id="q" type="" ng-model="question.question"> </textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2" align="right">
+                    <label class="control-label"> Answers: </label>
+                </div>
+
+                <div class="col-sm-10">
+
+                    <div class="col-sm-8" ng-if="question.type==='yes_or_no'">
+                        <label class="checkbox">
+                            <input id="t_a" type="checkbox" ng-model="question.answer"> </input>
+                            Is the statement correct?
+                        </label>
+                    </div>
+
+                    <div ng-if="question.type!=='yes_or_no'">
+                        <div class="form-group">
+                            <div ng-repeat="answer in question.answers">
+                                <div class="input-group">
+                                      <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="answer.right">
+                                      </span>
+                                    <input type="text" class="form-control" ng-model="answer.text">
+                                         <span class="input-group-addon">
+                                              <a href="" ng-click="vm.removeAnswer(answer)"><i
+                                                      class="fa fa-minus-circle"></i></a>
+                                         </span>
+                                </div>
+                                <!-- /input-group -->
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                      <span class="input-group-addon">
+                                        <input type="checkbox" ng-model="form.new_answer_right">
+                                      </span>
+                                    <input type="text" class="form-control" ng-model="form.new_answer_text">
+                                         <span class="input-group-addon">
+                                              <a href="" ng-click="vm.addAnswer()"><i class="fa fa-plus-circle"></i></a>
+                                         </span>
+                                </div>
+                                <!-- /input-group -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="question-tags" >
+                    <span style="margin-left: 5px" class="label" ng-repeat="tag in question.tags"
+                          ng-class="{'label-info' : tag.selected, 'label-default' : !tag.selected}">
+                        <a tooltip="Double click to label the question"
+                           ng-dblclick="vm.tagClicked(tag.tag, question)">
+                            <i class="fa fa-tag"></i>
+                            {{tag.tag}}</a></span>
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="e"> Explanation: </label>
+
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="e" type="textarea" ng-model="question.explanation" rows="3">
+                    </textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+            <div class="col-sm-offset-2 col-sm-2">
+                <div class="btn-group btn-group-sm">
+                    <a class="btn btn-default" href="" ng-click="vm.save()">Save</a>
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="btn-group btn-group-sm">
+                    <a class="btn btn-default" href="" ng-click="vm.create()">New</a>
+                    <a class="btn btn-default" href="" ng-click="vm.delete()">Delete</a>
+                    <a class="btn btn-default" href="" ng-click="vm.cancel()">Cancel</a>
+                </div>
+            </div>
+    </div>
+
+</div>

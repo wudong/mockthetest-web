@@ -1,0 +1,63 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div ng-if="result.mode==='test'" class="modal-title"><strong>Your Test Result</strong></div>
+        <div ng-if="result.mode==='practise'" class="modal-title"><strong>Your Practise Result</strong></div>
+    </div>
+
+    <div style="padding-top:30px" class="modal-body">
+
+
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+
+                <div class="row">
+                    <div ng-if="result.mode==='test'" ng-class="{'alert': true, 'alert-success': result.passed, 'alert-danger': !result.passed}">
+                        <h2>You have {{result.passed? 'passed': 'failed'}} the test! </h2>
+                    </div>
+                    <div ng-if="result.mode==='practise'">
+                       <h2>No more question in the practise!</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <table class="table well">
+                        <tr>
+                            <td> Total Question:</td>
+                            <td> {{result.total}}</td>
+                        </tr>
+                        <tr>
+                            <td> Right:</td>
+                            <td>{{result.right}}</td>
+                        </tr>
+                        <tr>
+                            <td> Wrong:</td>
+                            <td>{{result.wrong}}</td>
+                        </tr>
+                        <tr>
+                            <td> Rate:</td>
+                            <td>{{result.rate}} %</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="" ng-click="vm.review()"> <i class="fa fa-fw fa-eye"></i>Review Questions</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="" ng-click="vm.take_another_test()"> <i class="fa fa-fw fa-refresh"></i>Take Another</a>
+
+            </div>
+            <div class="col-sm-1" ng-if="result.mode==='practise'">
+             <a  href="" ng-click="vm.dismiss()">Dismiss</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,117 @@
+<div id='practise-main-body' class="practise-main-box" tabindex="0" ng-keyup="vm.key_pressed($event)"
+     style="outline:none">
+<!--second row to display the navigation of questions-->
+<div ng-show="!loadPromiseTracker.active()">
+
+<div class="row">
+    <div class="col-xs-12" align="center">
+        <div style="min-height: 20px">
+            <a href='' ng-repeat="q in questions" ng-click="vm.navigateTo($index)">
+                    <span ng-class="{'badge': true, 'alert-success': q.success && !vm.inTestMode(),
+                       'alert-danger': q.not_success &&  !vm.inTestMode(), 'alert-warning': q.flagged,
+                       'alert-info': vm.inTestMode() && (q.not_success || q.success),
+                        'larger-font': q.current
+                       } ">{{$index+1}}</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Third row to display the questions-->
+<div class="row" style="margin-top: 10px;">
+<div class="col-xs-12">
+<div class="row">
+<div class="col-xs-12">
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <div class="row">
+                <div class="col-xs-3">
+                    <!--not to display the timer it in the review mode -->
+                    <div id="practise_timer" ng-if="!vm.inReviewMode()">
+                        <i class="fa fa-clock-o fa-lg" style="margin-right: 5px"></i>
+                        <timer interval="1000" countdown="countdown"> {{minutes}} : {{seconds}}
+                        </timer>
+                    </div>
+                </div>
+
+                <div class="col-xs-6" align="center">
+                    <div class="btn-group btn-group-sm">
+                        <a type="button" class="btn btn-default"
+                                ng-click="vm.previous()"
+                                title="previous question">
+                            <i class="fa fa-lg fa-angle-double-left"></i></a>
+                        <a class="btn btn-default" ng-click="vm.next()"
+                           title="next question">
+                            <i class="fa fa-lg fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+
+                <div ng-switch="vm.getModeString()" class="col-xs-3" align="right">
+                    <div ng-switch-when="practise">
+                            <a class="color-inherit" style="margin-right: 10px"
+                                    ng-href="/question-browse/report/session-review"
+                               title="review the questions"><i class="fa fa-lg  fa-eye"></i></a>
+                            <a class="color-inherit"  style="margin-right: 10px" ng-click="vm.resetQuestions()" title="take another practise"><i
+                                    class="fa fa-repeat "></i></a>
+                            <a class="color-inherit"
+                               ng-click="vm.flag(question)" title="bookmark the question for review">
+                                <i class="fa fa-lg " ng-class="{'fa-bookmark': question.flagged,
+                                 'fa-bookmark-o': !question.flagged}"></i></a>
+                    </div>
+
+                    <div ng-switch-when="test">
+                            <a class="color-inherit"  style="margin-right: 10px" ng-click="vm.reportResult()"
+                                    title="finish and submit the test.">
+                                <i class="fa fa-check-circle-o"></i></a>
+
+                                <a class="color-inherit"
+                                   ng-click="vm.flag(question)" title="bookmark the question for review">
+                                    <i class="fa fa-lg " ng-class="{'fa-bookmark': question.flagged,
+                            'fa-bookmark-o': !question.flagged}"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-body" >
+    <!--the search text-->
+   <question-directive question="question" mode="{{vm.getModeString()}}"
+           listener="vm.questionListener">
+   </question-directive>
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+    <div class="row" style="margin-top: 10px">
+        <div class="col-xs-12">
+            <div class="progress">
+                <div ng-if="!vm.inTestMode()"
+                     ng-class="{'progress-bar':true, 'progress-bar-success': score.passed, 'progress-bar-danger': !score.passed }"
+                     style="width: {{100*(score.correctlyAnsweredQuestions/score.totalQuestions)}}%">
+                    <span> {{score.correctlyAnsweredQuestions}}</span>
+                </div>
+                <div class="progress-bar progress-bar-info"
+                     style="width: {{vm.getAnsweredPercentage()}}%">
+                    <span> {{score.answeredQuestions}}/{{score.totalQuestions}} </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div ng-show="loadPromiseTracker.active()" style="min-height: 200px">
+    <h1 style="text-align: center;">
+        Loading Questions <i class="fa fa-spinner fa-spin"></i>
+    </h1>
+</div>
+
+</div>

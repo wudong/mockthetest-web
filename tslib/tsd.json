@@ -1,0 +1,36 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "angularjs/angular.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "restangular/restangular.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "angular-ui-bootstrap/angular-ui-bootstrap.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "angularjs/angular-cookies.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "requirejs/require.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "angularjs/angular-route.d.ts": {
+      "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "amplifyjs/amplifyjs.d.ts": {
+      "commit": "8569dc2dc0b4c8e23520bba07f1782b1f6a82910"
+    }
+  }
+}

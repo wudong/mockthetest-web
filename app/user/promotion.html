@@ -1,0 +1,48 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()">&times;</button>
+        <h3 class="modal-title">Your support is needed!</h3>
+    </div>
+
+    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                <h4>Thanks for using the website</h4>
+                You have spend <span class="text-info">{{sessiongTime | number:1}} minitues </span> on our website already and we hope it is helpful.
+                We need <span class="text-info">your support</span> to get the website known to many more people so that they can benefit same as you.
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px">
+                <div class="col-md-12">
+                    <h4>Like us on Facebook</h4>
+                    <div>
+                        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Ftestlifeinuk&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=651663821579724" scrolling="no"
+                                frameborder="0" style="border:none; overflow:hidden; height:80px;" allowTransparency="true"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"  style="margin-top: 20px">
+                <div class="col-md-12">
+                    <h4>Give us feedback at our <a href="https://www.facebook.com/testlifeinuk" target="_blank">
+                        facebook page
+                    </a></h4>
+                 </div>
+            </div>
+
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<h4>Denote if you are generous</h4>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p ng-show="!isLogin">Remember! by <span class="text-info">registering and login</span>, we could keep track of your progress and help you preparing better!</p>
+                </div>
+            </div>
+    </div>
+
+</div>
+
