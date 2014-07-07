@@ -1,7 +1,7 @@
 /// <reference path="__all.d.ts" />
 
 define({
-    baseUrl: "./dist/public",
+    baseUrl: "./dist/build",
     paths: {
         'angular'           : '../../bower_components/angular/angular',
         'angular-cookies'   : '../../bower_components/angular-cookies/angular-cookies',
@@ -9,34 +9,33 @@ define({
         'angular-sanitize'   : '../../bower_components/angular-sanitize/angular-sanitize',
         'angular-timer'     : '../../bower_components/angular-timer/dist/angular-timer',
         'angular-promise-tracker'     : '../../bower_components/angular-promise-tracker/promise-tracker',
+        "angular-ui-router":          '../../bower_components/angular-ui-router/release/angular-ui-router',
         'restangular'         : '../../bower_components/restangular/dist/restangular',
         'angulartics'         : '../../bower_components/angulartics/src/angulartics',
-        'angulartics-ga'         : '../../bower_components/angulartics/src/angulartics-ga',
-        'angular-ui-bootstrap' : '../../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls' ,
-        'angular-storage'   : '../../bower_components/ngstorage/ngStorage',
-        'bootstrap'         : '../../bower_components/bootstrap/dist/js/bootstrap',
-        'jquery'            : '../../bower_components/jquery/dist/jquery',
+        'angulartics-ga-cordova'         : '../../bower_components/angulartics/src/angulartics-ga-cordova',
+        'jquery'            : '../../bower_components/jquery/jquery',
+        'jquery-mobile'            : '../../bower_components/jquery-mobile-bower/js/jquery.mobile-1.4.2',
         'domReady'          : '../../bower_components/requirejs-domready/domReady',
         'underscore'        : '../../bower_components/underscore/underscore',
         'lz-string'         : '../../bower_components/lz-string/libs/lz-string-1.3.3-min',
-        'amplify'           : '../../bower_components/amplify/lib/amplify',
-        'bootstrap-growl'   : '../../bower_components/bootstrap-growl/jquery.bootstrap-growl'
-        },
+        'amplify'           : '../../bower_components/amplify/lib/amplify'
+    },
 
     shim: {
         'angular': {
-            'exports': 'angular'
+            'exports': 'angular',
+            'deps': ['jquery']
         },
+
         'angular-cookies': ['angular'],
         'angular-route': ['angular'],
         'angular-timer': ['angular'],
-        'angular-storage': ['angular'],
+        'angular-ui-router': ['angular'],
         'restangular': ['angular'],
         'angular-promise-tracker': ['angular'],
-        'angular-ui-bootstrap': ['angular', 'bootstrap'],
         'angular-sanitize': ['angular'],
         'angulartics': ['angular'],
-        'angulartics-ga': ['angulartics'],
+        'angulartics-ga-cordova': ['angulartics'],
 
         'underscore' : {
             'exports': '_'
@@ -47,9 +46,8 @@ define({
             'exports': 'amplify'
         },
 
-        'bootstrap-growl' : ['bootstrap'],
+        'jquery-mobile': ['jquery'],
 
-        'bootstrap'  : ['jquery'],
         'jquery'     : {
             'export': '$'
         }

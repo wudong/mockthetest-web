@@ -6,17 +6,15 @@ module report
 {
     export class ResultReportController {
         scope:IReportScope;
-        modal:ng.ui.bootstrap.IModalServiceInstance;
 
         public static $inject = [
-            '$scope', '$modalInstance', 'result'
+            '$scope',  'result'
         ];
 
-        constructor($scope:IReportScope, $modalInstance:ng.ui.bootstrap.IModalServiceInstance,
+        constructor($scope:IReportScope,
                     result:IResultForReport) {
             this.scope = $scope;
             this.scope.result = result;
-            this.modal = $modalInstance;
             this.scope.vm = this;
 
             this.fill_result(this.scope.result);
@@ -28,19 +26,6 @@ module report
             result.rate = (result.right / result.total ) * 100;
             result.passed = result.rate >= model.Constance.Passing_Rate * 100;
         }
-
-        public review(){
-            this.modal.close('review');
-        }
-
-        public take_another_test(){
-            this.modal.close('another');
-        }
-
-        public dismiss(){
-            this.modal.dismiss();
-        }
-
     }
 
     export interface IReportScope extends ng.IScope {

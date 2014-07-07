@@ -89,9 +89,7 @@ module service {
     //store some shared data among the controllers.
     export class TestService {
 
-        //the user that is current login.
         private loginUser:model.User = null;
-
         private rootScope:ng.IScope;
 
         private questionRest:restangular.IElement;
@@ -105,7 +103,6 @@ module service {
         private window:ng.IWindowService;
 
         private storage: storage.StorageService;
-        private modal : ng.ui.bootstrap.IModalService;
 
         //the buffered array to be used by browse with a buffer param.
         private buffer_for_browse_id:string[] = [];
@@ -123,12 +120,11 @@ module service {
         private question_infos:{ [id: string]: QuestionInfo } = {};
 
         public static $inject = [
-            '$rootScope',  'Restangular', '$log', '$interval', '$q', '$window','$modal'
+            '$rootScope',  'Restangular', '$log', '$interval', '$q', '$window'
         ];
 
         constructor($rootScope:ng.IScope, rest:restangular.IService, $log:ng.ILogService,
-                    $interval:ng.IIntervalService, $q:ng.IQService, $window:ng.IWindowService,
-                    $modal:ng.ui.bootstrap.IModalService) {
+                    $interval:ng.IIntervalService, $q:ng.IQService, $window:ng.IWindowService) {
             this.logger = $log;
             this.rootScope = $rootScope;
             this.interval = $interval;
@@ -140,7 +136,6 @@ module service {
             this.window = $window;
 
             this.storage = new storage.StorageService();
-            this.modal = $modal;
 
             this.seoObject = new SEOInfoObject();
             //while loading the question.
@@ -153,18 +148,6 @@ module service {
             _.defer(()=>{
                 this.initializeService();
             })
-        }
-
-        public getSEOObject(): SEOInfoObject{
-            return this.seoObject;
-        }
-
-        public setSEOInfo(title: string, keyword: string[], desc? :string){
-            this.seoObject.reset();
-            this.seoObject.setTitle(title);
-            this.seoObject.setKeywords(keyword);
-            if (desc)
-                this.seoObject.setDescription(desc);
         }
 
         public initializeService(){
@@ -208,17 +191,17 @@ module service {
             iScope.isLogin = this.isLogin();
             iScope.sessiongTime = (this.getSessionTime()/60000);
 
-            var setting:ng.ui.bootstrap.IModalSettings = {
-                templateUrl: '/app/user/promotion.html',
-                scope: iScope
-            };
-
-            this.modal.open(setting).result.
-                then(()=>{
-                    this.storage.setUserPromotionDone();
-                    this.logger.debug("Disable the promoting again.")
-                   // this.promotingInShow=false;
-                });
+//            var setting:ng.ui.bootstrap.IModalSettings = {
+//                templateUrl: 'app/user/promotion.html',
+//                scope: iScope
+//            };
+//
+//            this.modal.open(setting).result.
+//                then(()=>{
+//                    this.storage.setUserPromotionDone();
+//                    this.logger.debug("Disable the promoting again.")
+//                   // this.promotingInShow=false;
+//                });
         }
 
         private getSessionTime(){
@@ -266,24 +249,7 @@ module service {
          * Show an warn message globally.
          */
         public displayMessage(message:string, type?:string, autoDismissTime?:number) {
-
-            /*if (this.msgDeliver && message) {
-                this.msgDeliver.displayMessage(message, type, autoDismissTime);
-                this.logger.debug("Message displayed: " + message);
-            }*/
-
-            //using bootstrapGrowl to display the message.
-            //https://github.com/ifightcrime/bootstrap-growl
-            (<any>$).bootstrapGrowl(message +"&nbsp;&nbsp;", {
-                ele: 'body', // which element to append to
-                type: type || 'info', // (null, 'info', 'danger', 'success')
-                offset: {from: 'top', amount: 20}, // 'top', or 'bottom'
-                align: 'right', // ('left', 'right', or 'center')
-                width: 'auto', // (integer, or 'auto')
-                delay: autoDismissTime || 4000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
-                allow_dismiss: true, // If true then will display a cross to close the popup.
-                stackup_spacing: 10 // spacing between consecutively stacked growls.
-            });
+            //TODO.
         }
 
         /*
@@ -481,14 +447,19 @@ module service {
                     this.logger.debug("Questions retrieved from backend: " + qs.length);
 
                     var count: number = 0;
+                    /* uncompress
                     _(qs).each((q: any)=> {
                         var qsCompress: string = q.questions;
                         var s = LZString.decompressFromBase64(qsCompress);
-                        var qsArray: model.Question[] = JSON.parse(s);
+                        var qsArray: model.Question[] = JSON.parse(qsCompress);
                         _(qsArray).each((q1:model.Question)=>{
                             count++;
                             this.updateQuestionInfoWithQuestion(q1)
                         })
+                    });*/
+                    _(qs).each((q:any)=>{
+                        count++;
+                        this.updateQuestionInfoWithQuestion(q);
                     });
 
                     this.storage.setQuestionLastUpdate();

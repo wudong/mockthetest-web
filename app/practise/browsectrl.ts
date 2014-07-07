@@ -4,8 +4,6 @@ import bootstrap = ng.ui.bootstrap;
 
 import service=require('app/service');
 import model=require('app/model');
-import report=require('app/practise/reportctrl');
-import main=require('app/main/mainctrl');
 import edit=require('app/question/editctrl');
 import question=require('app/question/question');
 import base=require('app/practise/commonctrl');
@@ -16,7 +14,6 @@ module practise {
         scope:IBrowseScope;
         logger:ng.ILogService;
         testService:service.TestService;
-        modal:bootstrap.IModalService;
         locationService: ng.ILocationService;
         routeParams: IBrowseRouteParam;
         base: base.CommonControl;
@@ -28,12 +25,11 @@ module practise {
         //realtestquestion: boolean;
 
         public static $inject = [
-            '$scope', '$log', 'testService', '$modal','$location', '$routeParams','$q',
+            '$scope', '$log', 'testService', '$location', '$routeParams','$q',
             '$anchorScroll',  'promiseTracker','$interval', 'type'
         ];
 
         constructor($scope:IBrowseScope, $log:ng.ILogService, testSrv:service.TestService,
-                    $modal:ng.ui.bootstrap.IModalService,
                     $location: ng.ILocationService, $routeParams: IBrowseRouteParam,
                     $q: ng.IQService, $anchorScroll: ng.IAnchorScrollService,
                     promiseTracker: ng.promisetracker.IPromiseTrackerService,
@@ -44,12 +40,11 @@ module practise {
             this.scope.vm = this;
             this.scope.questions = [];
             this.logger = $log;
-            this.modal = $modal;
             this.locationService = $location;
             this.routeParams = $routeParams;
             this.anchorScroll = $anchorScroll;
             this.scope.loadPromiseTracker = promiseTracker();
-            this.base = new base.CommonControl($log, testSrv, $modal, $location, $q, $interval);
+            this.base = new base.CommonControl($log, testSrv, $location, $q, $interval);
 
             this.browseMode = type;
             //this.realtestquestion = real;
@@ -58,9 +53,6 @@ module practise {
 
             //new CommonControl($logger, testSrv)
             this.prepareQuestionsWithRoute();
-
-            //call the parent to disable the parent control.
-            ((<main.IMainPageScope>this.scope.$parent).vm).setShowIntro(false);
 
             this.scope.$on('$routeUpdate', ()=>{
                 this.logger.debug("route has been updated to: " + this.locationService.absUrl());
@@ -129,7 +121,6 @@ module practise {
         }
 
         private browse_by_id(ids: string){
-            this.testService.setSEOInfo("Life In the UK Test Questions", []);
             return this.displayQuestionsByRetraval(()=> {
                     var split = ids.split(',');
                     return this.testService.findQuestionByIds(split);
@@ -137,11 +128,6 @@ module practise {
         }
 
         private browse_by_tag(tag: string, page: string){
-            this.testService.setSEOInfo("Question of Tag: " + tag
-                    +  (page? (" - Page "+page): ""),
-                ['Tag','Category', tag],
-                'Life in the UK Test question bank includes comprehensive questions from many sources. Browse the questions by tags and category')
-
             return this.displayQuestionsByRetraval(()=>{
                     return this.testService.getQuestionByTag(tag);
                 }, page
@@ -149,10 +135,6 @@ module practise {
         }
 
         private browse_by_report(reporttype: string, page: string){
-            this.testService.setSEOInfo("User Session and Progress Report" +  (page? (" - Page "+page): ""),
-                ['Report', 'Session'],
-                "Show the user's session and overall progress and browse all the questions of interest to the user.");
-
             return this.displayQuestionsByRetraval(()=> {
                 return this.testService.getQuestionsToBrowseByType(reporttype);
             }, page)
@@ -160,11 +142,6 @@ module practise {
         }
 
         private browse_by_search(search: string, page: string){
-            this.testService.setSEOInfo("Search for Questions: " + search
-                    +  (page? (" - Page "+page): "")
-                , ['Search', search],
-                'Search for questions in the Life in the UK Question Bank')
-
             return this.displayQuestionsByRetraval(()=> {
                 return this.testService.searchQuestions(search);
             }, page)
@@ -172,10 +149,6 @@ module practise {
 
         private browse_for_all(page: string){
             this.logger.debug("browsing for page : " + page);
-            this.testService.setSEOInfo("Browse the Questions Bank" +  (page? (" - Page "+page): ""),
-                ['Browse', "Question Bank", "Real Test Question"],
-                    'Life in the UK Test question bank includes comprehensive questions from many sources to fully cover all the topics of the test.' +
-                    ' It includes questions reported by people that have taken the test.');
             return this.displayQuestionsByRetraval(()=>{
                 var allQuestionVMs = this.testService.getAllQuestionVMs(false);
 
@@ -302,44 +275,6 @@ module practise {
 
         public submitMark() {
             this.base.submitMark();
-        }
-
-        public reportResult() {
-            var result:any = _(this.scope.questions).countBy(function (q:model.QuestionVM) {
-                return q.success ? 'right' : 'wrong';
-            });
-
-            //preparing the result report.
-            result.time_used = 10000;
-
-            if (!result.right) result.right = 0;
-            if (!result.wrong) result.wrong = 0;
-
-            //display a modal window to show the report.
-            var setting:ng.ui.bootstrap.IModalSettings = {
-                templateUrl: '/app/practise/report.html',
-                controller: report.ResultReportController,
-
-                //to inject this into the controller as parameter rest.
-                resolve: {
-                    result: () => {
-                        return result;
-                    }
-                }
-            };
-        }
-
-        public edit(q:model.QuestionVM) {
-            this.base.edit(q);
-        }
-
-        public flag(q:model.QuestionVM) {
-           this.base.flag(q);
-        }
-
-        //record the questions.
-        public report(q: model.QuestionVM, type: string){
-            this.base.report(q, type);
         }
 
         public toggle_display(name: string){

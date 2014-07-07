@@ -5,13 +5,13 @@
 <div id="pagination_div" class="row">
 
     <div class=" col-md-2">
-        <a  href="/question-browse/report/session-review" title="Review the questions you answered wrong" analytics-on>
+        <a  href="question-browse/report/session-review" title="Review the questions you answered wrong" analytics-on>
             <span class="label label-info">Review Your Questions</span>
         </a>
      </div>
 
     <div class=" col-md-2">
-        <a  href="/question-browse/tag/real-test" analytics-on
+        <a  href="question-browse/tag/real-test" analytics-on
             title="Questions reported by people who saw the question in real test.">
             <span class="label label-success">Real Test Questions</span></a>
      </div>
@@ -27,15 +27,15 @@
     <div class="col-md-6" align="right">
         <div aligh="right">
         <i class="fa fa-tags" style="margin-right: 5px"></i>
-        <a  href="/question-browse/tag/history" analytics-on>
+        <a  href="question-browse/tag/history" analytics-on>
             <span class="label label-default">History</span></a>
-        <a  href="/question-browse/tag/culture" analytics-on>
+        <a  href="question-browse/tag/culture" analytics-on>
             <span class="label label-default" >Culture</span></a>
-        <a  href="/question-browse/tag/law" analytics-on>
+        <a  href="question-browse/tag/law" analytics-on>
             <span class="label label-default">Law</span></a>
-        <a  href="/question-browse/tag/society" analytics-on>
+        <a  href="question-browse/tag/society" analytics-on>
             <span class="label label-default">Society</span></a>
-        <a  href="/question-browse/tag/government" analytics-on>
+        <a  href="question-browse/tag/government" analytics-on>
             <span class="label label-default"></i>Government</span></a>
         </div>
     </div>
@@ -54,10 +54,10 @@
 
     <!--recent searches/-->
     <div class="col-md-12">
-        <a  href="/question-browse/search/queen" analytics-on analytics-event="popular_search"><span class="label label-default">Queen</span></a>
-        <a  href="/question-browse/search/prime%20minister" analytics-on analytics-event="popular_search"><span class="label label-default">Prime Minister</span></a>
+        <a  href="question-browse/search/queen" analytics-on analytics-event="popular_search"><span class="label label-default">Queen</span></a>
+        <a  href="question-browse/search/prime%20minister" analytics-on analytics-event="popular_search"><span class="label label-default">Prime Minister</span></a>
 
-        <a  ng-repeat="st in vm.getRecentSearches()" ng-href="/question-browse/search/{{st}}" analytics-on analytics-event="recent_search">
+        <a  ng-repeat="st in vm.getRecentSearches()" ng-href="question-browse/search/{{st}}" analytics-on analytics-event="recent_search">
             <span class="label label-default">{{st}}</span>
         </a>
     </div>
@@ -68,7 +68,7 @@
         <div class="text-center">
             <ul class="pagination">
                 <li ng-repeat="page in page_index" ng-class="{'active': current_page - page === 0}">
-                    <a  ng-href="/question-browse/{{vm.getSearchStringParam(page)}}">{{page}}</a>
+                    <a  ng-href="question-browse/{{vm.getSearchStringParam(page)}}">{{page}}</a>
                 </li>
             </ul>
         </div>
@@ -122,9 +122,9 @@
                     </div>
 
                     <div class="panel-footer" style="text-align: center">
-                        <a ng-href="/question-browse/{{vm.getSearchStringParam(current_page-1)}}" ng-disabled="current_page==1" tooltip="previous page"> <i class="fa fa-lg fa-arrow-circle-o-left"></i></a>
+                        <a ng-href="question-browse/{{vm.getSearchStringParam(current_page-1)}}" ng-disabled="current_page==1" tooltip="previous page"> <i class="fa fa-lg fa-arrow-circle-o-left"></i></a>
                         <a style="margin-left: 10px; margin-right: 10px" href="" tooltip="go up to top" ng-click="vm.goto_top()"> <i class="fa fa-lg fa-arrow-circle-o-up"></i></a>
-                        <a ng-href="/question-browse/{{vm.getSearchStringParam(current_page+1)}}" ng-disabled="current_page==total_page" tooltip="next page"> <i class="fa fa-lg fa-arrow-circle-o-right"></i></a>
+                        <a ng-href="question-browse/{{vm.getSearchStringParam(current_page+1)}}" ng-disabled="current_page==total_page" tooltip="next page"> <i class="fa fa-lg fa-arrow-circle-o-right"></i></a>
                     </div>
                 </div>
             </div>

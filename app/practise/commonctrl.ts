@@ -5,7 +5,6 @@ import bootstrap = ng.ui.bootstrap;
 import service=require('app/service');
 import model=require('app/model');
 import report=require('app/practise/reportctrl');
-import main=require('app/main/mainctrl');
 import edit=require('app/question/editctrl');
 import question=require('app/question/question');
 import browse=require('app/practise/browsectrl');
@@ -26,19 +25,18 @@ module practise {
     export class CommonControl {
         logger:ng.ILogService;
         testService:service.TestService;
-        modal:bootstrap.IModalService;
         locationService: ng.ILocationService;
         q: ng.IQService;
         interval: ng.IIntervalService;
 
         constructor($log:ng.ILogService, testSrv:service.TestService,
-                    $modal:ng.ui.bootstrap.IModalService,
+
                     $location: ng.ILocationService,
                     $q: ng.IQService, $interval: ng.IIntervalService
                     ) {
             this.testService = testSrv;
             this.logger = $log;
-            this.modal = $modal;
+
             this.q = $q;
             this.locationService = $location;
             this.interval = $interval;
@@ -160,18 +158,18 @@ module practise {
                 }
             };
 
-            this.modal.open(setting).result.
-                then((option:string)=> {
-//                    if (option==='review'){
-//                        if (this.inTestMode()) {
-//                            this.review_the_test();
-//                        }else if (this.inPractiseMode()){
-//                            this.review_practise();
-//                        }
-//                    }else if (option==='another'){
-//                        this.resetQuestions();
-//                    }
-                });
+//            this.modal.open(setting).result.
+//                then((option:string)=> {
+////                    if (option==='review'){
+////                        if (this.inTestMode()) {
+////                            this.review_the_test();
+////                        }else if (this.inPractiseMode()){
+////                            this.review_practise();
+////                        }
+////                    }else if (option==='another'){
+////                        this.resetQuestions();
+////                    }
+//                });
         }
 
 
@@ -234,18 +232,18 @@ module practise {
                     }
                 };
 
-                return this.modal.open(setting).result.
-                    then((option:any)=> {
-                        if (option==='save'){
-                            this.save(q);
-                        }else if (option==='delete'){
-                            this.delete(q);
-                        }else if (_.isObject(option)){
-                            if (option.operation ==='create' && option.question){
-                                this.create(option.question);
-                            }
-                        }
-                    });
+//                return this.modal.open(setting).result.
+//                    then((option:any)=> {
+//                        if (option==='save'){
+//                            this.save(q);
+//                        }else if (option==='delete'){
+//                            this.delete(q);
+//                        }else if (_.isObject(option)){
+//                            if (option.operation ==='create' && option.question){
+//                                this.create(option.question);
+//                            }
+//                        }
+//                    });
             }else{
                 this.testService.displayMessage("No privilege to edit question.")
             }
@@ -274,45 +272,9 @@ module practise {
         public report(q: model.QuestionVM, type: string){
             this.logger.debug("Question of ID %s is been reported need improvement with type %s.", q.question._id, model.ReportType[type]);
 
-            this.testService.reportQuestion(q, model.ReportType[type],
-                (success: boolean, msg: string)=>{
-
-                });
+            //TODO
         }
 
-        public save(q: model.QuestionVM){
-            this.testService.saveQuestion(q, (succ, message)=>{
-                if (succ){
-                    this.testService.displayMessage("Question is updated successfully.", "info")
-                }else{
-                    this.testService.displayMessage("Update question failed!");
-                }
-            });
-        }
-
-        /**
-         * insert an new question.
-         * @param q
-         */
-        public create(q: model.Question){
-            this.testService.createQuestion(q, (succ, message)=>{
-                if (succ){
-                    this.testService.displayMessage("Question is create successfully.", "info")
-                }else{
-                    this.testService.displayMessage("Creating question failed!");
-                }
-            });
-        }
-
-        public delete(q: model.QuestionVM){
-            this.testService.deleteQuestion(q, (succ, message)=>{
-                if (succ){
-                    this.testService.displayMessage("Question is deleted successfully.", "info")
-                }else{
-                    this.testService.displayMessage("Delete question failed!")
-                }
-            });
-        }
     }
 }
 export=practise;

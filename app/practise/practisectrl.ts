@@ -4,9 +4,6 @@ import bootstrap = ng.ui.bootstrap;
 
 import service=require('app/service');
 import model=require('app/model');
-import report=require('app/practise/reportctrl');
-import main=require('app/main/mainctrl');
-import edit=require('app/question/editctrl');
 import question=require('app/question/question');
 import browse=require('app/practise/browsectrl');
 import base=require('app/practise/commonctrl');
@@ -20,7 +17,6 @@ module practise {
         testService:service.TestService;
         intervalService:ng.IIntervalService;
         timeoutService:ng.ITimeoutService;
-        modal:bootstrap.IModalService;
         locationService: ng.ILocationService;
         routeParams: any;
         mode : model.MODE;
@@ -37,12 +33,12 @@ module practise {
         pre_mode : model.MODE;
 
         public static $inject = [
-            '$scope', '$log', 'testService', '$interval', '$timeout', '$modal','$location', '$routeParams',
+            '$scope', '$log', 'testService', '$interval', '$timeout','$location', '$routeParams',
             'promiseTracker', '$q', 'mode'
         ];
 
         constructor($scope:IPractiseScope, $log:ng.ILogService, testSrv:service.TestService,
-                    $interval:ng.IIntervalService, $timeout:ng.ITimeoutService, $modal:ng.ui.bootstrap.IModalService,
+                    $interval:ng.IIntervalService, $timeout:ng.ITimeoutService,
                     $location: ng.ILocationService, $routeParams: ng.route.IRouteParamsService,
                     promiseTracker: ng.promisetracker.IPromiseTrackerService, $q: ng.IQService,
                     mode: model.MODE) {
@@ -53,21 +49,18 @@ module practise {
             this.logger = $log;
             this.intervalService = $interval;
             this.timeoutService = $timeout;
-            this.modal = $modal;
+
             this.locationService = $location;
             this.routeParams = $routeParams;
             this.scope.loadPromiseTracker = promiseTracker();
 
-            this.base = new base.CommonControl($log, testSrv, $modal, $location, $q, $interval);
+            this.base = new base.CommonControl($log, testSrv, $location, $q, $interval);
 
             //this.promiseTracker = promiseTracker;
             this.mode = mode;
 
             this.setupQuestions();
-            this.setSEO();
 
-            //call the parent to disable the parent control.
-            ((<main.IMainPageScope>this.scope.$parent).vm).setShowIntro(false);
         }
 
         public questionListener : question.IQuestionListener ={
@@ -79,20 +72,6 @@ module practise {
 
             tagQuestion: (tag: string, question: model.QuestionVM)=>{
                 this.base.tagQuestion(tag, question);
-            }
-        }
-
-        private setSEO(){
-           if (this.mode === model.MODE.test ){
-               this.testService.setSEOInfo('Test Simulator', ['Simulator', 'Emulate', 'Real Test Environment'],
-                 'A Life in the UK Test simulator/emulator that simulate the real test environment. It is good to test your capability of the test.'
-               )
-           }
-            if (this.mode === model.MODE.practise ){
-                this.testService.setSEOInfo('Practice with the questions',[],
-                    'Practise with the all the question i the question back in the simulated app. It helps to record your practise progress present ' +
-                        'the best questions for you according to your history.'
-                )
             }
         }
 
@@ -162,48 +141,6 @@ module practise {
             this.scope.loadPromiseTracker.addPromise(then);
         }
 
-        public reportResult() {
-
-            if (this.inReviewMode())return;
-
-            var result:any = _(this.scope.questions).countBy(function (q:model.QuestionVM) {
-                return q.success ? 'right' : 'wrong';
-            });
-
-            //preparing the result report.
-            result.time_used = 10000;
-
-            if (!result.right) result.right = 0;
-            if (!result.wrong) result.wrong = 0;
-
-            result.mode = this.getModeString();
-
-            //display a modal window to show the report.
-            var setting:ng.ui.bootstrap.IModalSettings = {
-                templateUrl: '/app/practise/report.html',
-                controller: report.ResultReportController,
-
-                //to inject this into the controller as parameter rest.
-                resolve: {
-                    result: () => {
-                        return result;
-                    }
-                }
-            };
-
-            this.modal.open(setting).result.
-                then((option:string)=> {
-                   if (option==='review'){
-                       if (this.inTestMode()) {
-                           this.review_the_test();
-                       }else if (this.inPractiseMode()){
-                            this.review_practise();
-                       }
-                   }else if (option==='another'){
-                       this.resetQuestions();
-                   }
-                });
-        }
 
 
         public navigateTo(index:number) {
@@ -252,6 +189,10 @@ module practise {
             }else if (this.scope.questionIndex === this.scope.questions.length-1 ){//last one
                 if (this.indexLabelMap) this.reportResult();
             }
+        }
+
+        public reportResult(){
+
         }
 
         public flag(q:model.QuestionVM) {

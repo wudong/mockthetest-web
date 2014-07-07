@@ -1,0 +1,37 @@
+{
+  "name": "MockTheTest",
+  "version": "0.0.1",
+  "authors": [
+    "Wudong Liu <wudong.liu@gmail.com>"
+  ],
+  "description": "Online Test",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "",
+    "angular-loader": "",
+    "angular-cookies": "",
+    "angular-sanitize": "",
+    "angular-timer": "",
+    "angular-mocks": "",
+    "angular-ui-router": "",
+    "angulartics": "",
+    "angular-promise-tracker": "~2.0",
+    "restangular": "~1.4.0",
+    "underscore": "~1.6.0",
+    "requirejs": "~2.1.11",
+    "amplify": "~1.1.2",
+    "lz-string": "",
+    "requirejs-domready": "~2.0.1",
+    "fontawesome": "4.1.0",
+    "jquery-mobile-bower": "~1.4.2"
+  }
+}

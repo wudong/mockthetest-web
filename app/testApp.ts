@@ -3,9 +3,6 @@
 import practise=require('app/practise/practisectrl');
 import browse=require('app/practise/browsectrl');
 import question=require('app/question/editctrl');
-import login=require('app/login/loginctrl');
-import nav=require('app/nav/navctrl');
-import main=require('app/main/mainctrl');
 import report=require('app/practise/reportctrl');
 import service=require('app/service');
 import model=require('app/model');
@@ -13,23 +10,17 @@ import qstextfilter = require('app/question/questiontextfilter');
 import qsdirective=require('app/question/question');
 import info=require('app/info/infoctrl');
 
-
 module oltest{
     'use strict';
+
     export function config(angular) {
-        var app:ng.IModule = angular.module('testApp',
+        var app:ng.IModule = angular.module('testMobileApp',
             //the dependencies of the module.
-            ['restangular', 'timer', 'ui.bootstrap', 'ngCookies',
-                'ngStorage', 'ngRoute', 'ngSanitize', 'ajoslin.promise-tracker',
-                'angulartics', 'angulartics.google.analytics'
-            ])
+            ['restangular', 'timer', 'ngSanitize', 'angulartics', 'angulartics.google.analytics.cordova', 'ui.router'])
             .controller('practiseCtrl', practise.PractiseController)
             .controller('qEditCtrl', question.QuestionEditController)
-            .controller('loginCtrl', login.UserLoginController)
             .controller('reportCtrl', report.ResultReportController)
-            .controller('navCtrl', nav.NavigationController)
             .controller('browseCtrl', browse.BrowseController)
-            .controller('mainCtrl', main.MainController)
             .controller('infoCtrl', info.InfoController);
 
         app.filter('emphasis_two', ()=>{
@@ -43,64 +34,21 @@ module oltest{
 
         //configure the restangular.js
         app.config(['RestangularProvider', (RestangularProvider:restangular.IProvider)=> {
-            RestangularProvider.setBaseUrl("/json");
+            RestangularProvider.setBaseUrl("/test_html/json");
+            RestangularProvider.setRequestSuffix('.json');
             //instruct restangular to use '_id' instead of id in the route.
             RestangularProvider.setRestangularFields({
                 id: "_id"
             });
         }]);
 
-        app.config([
-            '$locationProvider',
-            function($locationProvider) {
-                //$locationProvider.hashPrefix('!');
-                $locationProvider.html5Mode(true).hashPrefix('!');
-
-            }
-        ]);
-
         app.config(['$logProvider', function ($logProvider){
             //To disable debug logs.
             $logProvider.debugEnabled = false;
         }]);
 
-        app.config(['$routeProvider', (routeProvider: ng.route.IRouteProvider)=>{
-            routeProvider.when('/question-practise', {
-                templateUrl: 'app/practise/practise.html',
-                controller: 'practiseCtrl',
-                reloadOnSearch: false,
-                resolve:{
-                    mode: ()=>{return model.MODE.practise}
-                }
-            })
-            .when('/question-browse', {
-                    redirectTo: '/question-browse/all/1'
-                })
-            .when('/question-browse/all/:page', {
-                templateUrl: 'app/practise/browse.html',
-                controller: 'browseCtrl',
-                reloadOnSearch: false,
-                resolve:{
-                    type: ()=>{return 'all'}
-                }
-            })
-            .when('/question-browse/:type/:value/:page?', {
-                templateUrl: 'app/practise/browse.html',
-                controller: 'browseCtrl',
-                reloadOnSearch: false,
 
-                resolve:{
-                    type: ()=>{return 'type'}
-                }
-            })
-            .when('/question-test', {
-                    templateUrl: 'app/practise/practise.html',
-                    controller: 'practiseCtrl',
-                    resolve:{
-                        mode: ()=>{return model.MODE.test}
-                    }
-                });
-        }]);
+
 //
 //        app.run((testService: service.TestService, $log: ng.ILogService)=>{
 //            $log.debug("Post Loading Initialization Start");

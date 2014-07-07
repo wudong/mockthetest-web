@@ -7,45 +7,23 @@ import model = require ('app/model');
 module question {
     export class QuestionEditController {
         scope:IQuestionEditScope;
-        modal:ng.ui.bootstrap.IModalServiceInstance;
         questionVM: model.QuestionVM;
 
         public static $inject = [
-            '$scope', '$modalInstance', 'question'
+            '$scope', 'question'
         ];
 
         constructor($scope:IQuestionEditScope,
-                    $modalInstance:ng.ui.bootstrap.IModalServiceInstance,
                     question: model.QuestionVM
 
             ) {
             this.scope = $scope;
             this.scope.vm = this;
-            this.modal = $modalInstance;
             this.scope.question = question.question;
             this.questionVM = question;
             this.scope.form = {new_answer_text: "", new_answer_right: false, newQuestion: false};
         }
 
-        public save(){
-            if (this.scope.question._id){
-                this.modal.close('save');
-            }else{
-                //create a new one.
-                this.modal.close({
-                    operation: 'create',
-                    question: this.scope.question
-                });
-            }
-        }
-
-        public delete(){
-            this.modal.close('delete');
-        }
-
-        public cancel(){
-            this.modal.dismiss();
-        }
 
         public create(){
             this.scope.form.newQuestion=true;
